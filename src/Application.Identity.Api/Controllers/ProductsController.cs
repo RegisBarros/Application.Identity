@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Api.Data;
 using Application.Identity.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Identity.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
