@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Identity.Api.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

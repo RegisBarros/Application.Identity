@@ -3,8 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Identity.Api.Models;
 using Application.Identity.Api.Models.Messages;
+using Application.Identity.Api.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Identity.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -27,6 +28,11 @@ namespace Application.Identity.Api.Controllers
             _identitySettings = identitySettings.Value;
         }
 
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="registerUser"></param>
+        /// <returns></returns>
         [HttpPost("signup")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest registerUser)
         {

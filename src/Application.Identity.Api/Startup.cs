@@ -1,5 +1,6 @@
 ﻿using Application.Identity.Api.Data;
-using Application.Identity.Api.Models;
+using Application.Identity.Api.Options;
+using Application.Identity.Api.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Application.Identity.Api
@@ -45,7 +49,7 @@ namespace Application.Identity.Api
             {
                 a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(b=> 
+            }).AddJwtBearer(b =>
             {
                 b.RequireHttpsMetadata = true;
                 b.SaveToken = true;
@@ -60,7 +64,16 @@ namespace Application.Identity.Api
                 };
             });
 
+            // Swagger
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Application Auth Api", Version = "v1" });
 
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                s.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +88,12 @@ namespace Application.Identity.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var swaggerSettings = new SwaggerSettings();
+            Configuration.GetSection("Swagger").Bind(swaggerSettings);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerSettings.JsonRoute; });
+            app.UseSwaggerUI(option => option.SwaggerEndpoint(swaggerSettings.UIEndpoint, swaggerSettings.Description));
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
