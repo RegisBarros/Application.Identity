@@ -31,8 +31,11 @@ namespace Application.Identity.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityContext")));
+            // Entity Framework 
+            //services.AddDbContext<IdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityContext")));
+            services.AddDbContext<IdentityContext>(options => options.UseNpgsql(Configuration.GetConnectionString("IdentityContext")));
 
+            // Identity 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
