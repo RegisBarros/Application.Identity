@@ -10,8 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -71,6 +74,19 @@ namespace Application.Identity.Api
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Application Auth Api", Version = "v1" });
+
+                s.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                s.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                {
+                        "Bearer", Enumerable.Empty<string>() },
+                });
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
