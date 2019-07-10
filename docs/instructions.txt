@@ -11,3 +11,6 @@ docker run --name postgresdb --network=postgres-network -e "POSTGRES_PASSWORD=ro
 docker run --name postgresdb --network=postgres-network -e "POSTGRES_PASSWORD=root" -p 5432:5432 -v pgdata:/var/lib/postgresql/data -d postgres
 
 4 - docker run --name postgres-pgadmin --network=postgres-network -p 15432:80 -e "PGADMIN_DEFAULT_EMAIL=regisbarros21@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=admin" -d dpage/pgadmin4
+
+
+http://www.andreavallotti.tech/en/2017/10/using-ef-cores-migration-with-docker-and-mysql/

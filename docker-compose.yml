@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+  application.identity.api:
+    image: ${DOCKER_REGISTRY-}applicationidentityapi
+    build:
+      context: .
+      dockerfile: src/Application.Identity.Api/Dockerfile
+    networks: 
+      - postgres_network
+    depends_on: 
+      - postgresdb
+
+  postgresdb:
+    image: postgres
+    container_name: postgresdb
+    restart: always
+    environment: 
+      POSTGRES_PASSWORD: "root"
+    ports: 
+      - "54320:5432"
+    networks: 
+      - postgres_network
+    volumes: 
+      - /data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "regisbarros21@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports: 
+      - "16543:80"
+    depends_on: 
+      - postgresdb
+    networks: 
+      - postgres_network 
+
+volumes:  
+  postgres_data:
+    external: false
+
+networks: 
+  postgres_network:
+    driver: bridge
+
+
+
