@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Application.Identity.Api.ValidationAttributes;
 
 namespace Application.Identity.Api.Models.Messages
 {
@@ -14,5 +15,8 @@ namespace Application.Identity.Api.Models.Messages
 
         [Compare("Password", ErrorMessage = "Password doesn't match")]
         public string ConfirmPassword { get; set; }
+
+        [RoleType(ErrorMessage = "Invalid access type")]
+        public string AccessType { get; set; }
     }
 }

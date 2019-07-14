@@ -1,0 +1,16 @@
+1 - docker network create --driver bridge postgres-network
+
+2 - docker create --network=postgres-network -v /var/lib/postgresql/data --name PostgresData alpine
+
+docker run -p 5432:5432 --name yourContainerName -e POSTGRES_PASSWORD=yourPassword -d --volumes-from PostgresData postgres
+
+3 - docker run --name postgresdb --network=postgres-network -e "POSTGRES_PASSWORD=root" -p 5432:5432 --volumes-from PostgresData -d postgres
+	
+docker run --name postgresdb --network=postgres-network -e "POSTGRES_PASSWORD=root" -p 5432:543 -v d:/docker:/var/lib/postgresql/data -d postgres
+
+docker run --name postgresdb --network=postgres-network -e "POSTGRES_PASSWORD=root" -p 5432:5432 -v pgdata:/var/lib/postgresql/data -d postgres
+
+4 - docker run --name postgres-pgadmin --network=postgres-network -p 15432:80 -e "PGADMIN_DEFAULT_EMAIL=regisbarros21@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=admin" -d dpage/pgadmin4
+
+
+http://www.andreavallotti.tech/en/2017/10/using-ef-cores-migration-with-docker-and-mysql/
