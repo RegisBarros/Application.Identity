@@ -70,6 +70,12 @@ namespace Application.Identity.Api
                 };
             });
 
+            // Only useful if have more complex required roles     
+            // services.AddAuthorization(options =>
+            // {
+            //     options.AddPolicy("AdminRole", policy => policy.RequireRole("Admin"));
+            // });
+
             // Swagger
             services.AddSwaggerGen(s =>
             {

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using static Application.Identity.Api.Models.IdentityRoles;
+
 namespace Application.Identity.Api.Controllers
 {
     [Authorize]
@@ -71,6 +73,7 @@ namespace Application.Identity.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Admin)]
         public async Task<ActionResult<Product>> Delete(int id)
         {
             var product = await _context.Products.FindAsync(id);
